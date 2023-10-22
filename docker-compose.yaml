@@ -1,0 +1,45 @@
+version: '3.9'
+
+services:
+  nginx:
+    build: ./Docker/nginx
+    volumes:
+      - ./:/var/www/sf_app
+      - ./Docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - 80:80
+    depends_on:
+      - sf_app
+    networks:
+      - localnet
+  sf_app:
+    build:
+      context: ./Docker/sf_app
+      args:
+        HOST_UID: ${HOST_UID}
+        HOST_GID: ${HOST_GID}
+    environment:
+      PHP_IDE_CONFIG: "serverName=Docker"
+    volumes:
+      - ./:/var/www/sf_app
+      - ./Docker/sf_app/php.ini:/usr/local/etc/php/php.ini
+    depends_on:
+      - postgres
+    networks:
+      - localnet
+  postgres:
+    build: ./Docker/postgres
+    ports:
+      - 54320:5432
+    volumes:
+      - ./volumes/database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: "${POSTGRES_USER}"
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: "${POSTGRES_DB}"
+    networks:
+      - localnet
+
+networks:
+  localnet:
+    driver: bridge
