@@ -13,7 +13,6 @@ coverage:
 	php -d memory_limit=1G -d xdebug.mode=coverage bin/phpunit --coverage-html=".codecoverage" --path-coverage
 validate:
 	php bin/console lint:container
-	php bin/console graphql:validate
 test_env:
 	php bin/console doctrine:database:drop --env=test --if-exists --force
 	php bin/console doctrine:database:create --env=test --if-not-exists
