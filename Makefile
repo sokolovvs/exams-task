@@ -18,4 +18,4 @@ test_env:
 	php bin/console doctrine:database:create --env=test --if-not-exists
 	php bin/console doctrine:migrations:migrate --env=test --no-interaction
 fixtures:
-	php bin/console doctrine:fixtures:load
+	php bin/console doctrine:fixtures:load --no-interaction

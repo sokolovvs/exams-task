@@ -12,7 +12,13 @@ class ExamFixture extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $exam = new Exam(
+        $manager->persist(self::exam());
+        $manager->flush();
+    }
+
+    public static function exam(): Exam
+    {
+        return new Exam(
             'Math test',
             new Question(
                 '1 + 1 =',
@@ -77,8 +83,5 @@ class ExamFixture extends Fixture
                 new Option('20', true),
             ),
         );
-
-        $manager->persist($exam);
-        $manager->flush();
     }
 }
