@@ -41,13 +41,13 @@ class ChallengeControllerTest extends WebTestCase
         $location = $this->startChallenge();
         $response = $this->client->getInternalResponse();
         self::assertEquals(Response::HTTP_CREATED, $response->getStatusCode());
-        self::assertStringStartsWith('/challenges/', $location);
+        self::assertStringStartsWith('/api/v1/challenges/', $location);
     }
 
     public function testCanNotStartChallenge(): void
     {
         $examId = Uuid::uuid4()->toString();
-        $this->client->request(Request::METHOD_POST, "/exams/$examId/challenges");
+        $this->client->request(Request::METHOD_POST, "/api/v1/exams/$examId/challenges");
         $response = $this->client->getInternalResponse();
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
         self::assertNull($response->getHeader('Location'));
@@ -74,7 +74,7 @@ class ChallengeControllerTest extends WebTestCase
     public function testGetChallengeNotFound(): void
     {
         $challengeId = Uuid::uuid4()->toString();
-        $this->client->request(Request::METHOD_GET, "/challenges/$challengeId");
+        $this->client->request(Request::METHOD_GET, "/api/v1/challenges/$challengeId");
         $response = $this->client->getInternalResponse();
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
@@ -83,7 +83,7 @@ class ChallengeControllerTest extends WebTestCase
     {
         $this->examineeProvider->setExamineeId(Uuid::uuid4()->toString());
         $challengeId = Uuid::uuid4()->toString();
-        $this->client->request(Request::METHOD_GET, "/challenges/$challengeId");
+        $this->client->request(Request::METHOD_GET, "/api/v1/challenges/$challengeId");
         $response = $this->client->getInternalResponse();
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
@@ -91,7 +91,7 @@ class ChallengeControllerTest extends WebTestCase
     public function testFinishChallengeSuccess(): void
     {
         $location = $this->startChallenge();
-        $challengeId = explode('/', $location)[2];
+        $challengeId = explode('/', $location)[4];
         $answers = $this->fetchChallengeResponses($challengeId, true);
         $this->client->request(Request::METHOD_PUT, "$location/finish", [], [], [], json_encode($answers));
         $response = $this->client->getInternalResponse();
@@ -103,7 +103,7 @@ class ChallengeControllerTest extends WebTestCase
         $location = $this->startChallenge();
         $challengeId = Uuid::uuid4()->toString();
         $answers = $this->fetchChallengeResponses($challengeId, true);
-        $this->client->request(Request::METHOD_PUT, "/challenges/$challengeId/finish", [], [], [], json_encode($answers));
+        $this->client->request(Request::METHOD_PUT, "/api/v1/challenges/$challengeId/finish", [], [], [], json_encode($answers));
         $response = $this->client->getInternalResponse();
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
@@ -112,7 +112,7 @@ class ChallengeControllerTest extends WebTestCase
     {
         $location = $this->startChallenge();
         $anotherLocation = $this->startChallenge();
-        $anotherChallengeId = explode('/', $anotherLocation)[2];
+        $anotherChallengeId = explode('/', $anotherLocation)[4];
         $answers = $this->fetchChallengeResponses($anotherChallengeId, true);
         $this->client->request(Request::METHOD_PUT, "$location/finish", [], [], [], json_encode($answers));
         $response = $this->client->getInternalResponse();
@@ -122,7 +122,7 @@ class ChallengeControllerTest extends WebTestCase
     public function testCantFinishChallengeIfOptionDuplicated(): void
     {
         $location = $this->startChallenge();
-        $challengeId = explode('/', $location)[2];
+        $challengeId = explode('/', $location)[4];
         $answers = $this->fetchChallengeResponses($challengeId, true);
         $answers[] = $answers[0];
         $this->client->request(Request::METHOD_PUT, "$location/finish", [], [], [], json_encode($answers));
@@ -133,7 +133,7 @@ class ChallengeControllerTest extends WebTestCase
     public function testCantFinishAlreadyFinishedChallenge(): void
     {
         $location = $this->startChallenge();
-        $challengeId = explode('/', $location)[2];
+        $challengeId = explode('/', $location)[4];
         $answers = $this->fetchChallengeResponses($challengeId, true);
         $this->client->request(Request::METHOD_PUT, "$location/finish", [], [], [], json_encode($answers));
         $response = $this->client->getInternalResponse();
@@ -146,7 +146,7 @@ class ChallengeControllerTest extends WebTestCase
     public function testChallengeResultsSuccess(): void
     {
         $location = $this->startChallenge();
-        $challengeId = explode('/', $location)[2];
+        $challengeId = explode('/', $location)[4];
         $correctAnswers = $this->fetchChallengeResponses($challengeId, true);
         $this->client->request(Request::METHOD_PUT, "$location/finish", [], [], [], json_encode($correctAnswers));
         $this->client->request(Request::METHOD_GET, "$location/results");
@@ -158,11 +158,11 @@ class ChallengeControllerTest extends WebTestCase
     public function testChallengeResultsNotFound(): void
     {
         $location = $this->startChallenge();
-        $challengeId = explode('/', $location)[2];
+        $challengeId = explode('/', $location)[4];
         $randomUuid = Uuid::uuid4()->toString();
         $correctAnswers = $this->fetchChallengeResponses($challengeId, true);
         $this->client->request(Request::METHOD_PUT, "$location/finish", [], [], [], json_encode($correctAnswers));
-        $this->client->request(Request::METHOD_GET, "/challenges/$randomUuid/results");
+        $this->client->request(Request::METHOD_GET, "/api/v1/challenges/$randomUuid/results");
         $response = $this->client->getInternalResponse();
         self::assertEquals(Response::HTTP_NOT_FOUND, $response->getStatusCode());
     }
@@ -186,7 +186,7 @@ class ChallengeControllerTest extends WebTestCase
     private function startChallenge(): ?string
     {
         $examId = $this->addExam();
-        $this->client->request(Request::METHOD_POST, "/exams/$examId/challenges");
+        $this->client->request(Request::METHOD_POST, "/api/v1/exams/$examId/challenges");
         $response = $this->client->getInternalResponse();
 
         return $response->getHeader('Location');

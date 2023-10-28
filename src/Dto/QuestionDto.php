@@ -3,9 +3,12 @@
 namespace App\Dto;
 
 use App\Entity\Question;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(required: ['id', 'content', 'options'])]
 final class QuestionDto
 {
+    #[OA\Property(title: 'question ID', format: 'uuid')]
     public readonly string $id;
     public readonly string $content;
 

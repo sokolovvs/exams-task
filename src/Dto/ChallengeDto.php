@@ -3,10 +3,14 @@
 namespace App\Dto;
 
 use App\Entity\Challenge;
+use OpenApi\Attributes as OA;
 
+#[OA\Schema(required: ['challengeId', 'examId', 'title', 'questions'])]
 final class ChallengeDto
 {
+    #[OA\Property(format: 'uuid')]
     public readonly string $challengeId;
+    #[OA\Property(format: 'uuid')]
     public readonly string $examId;
     public readonly string $title;
 

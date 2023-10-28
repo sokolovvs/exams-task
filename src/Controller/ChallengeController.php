@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\Dto\AnswerDto;
+use App\Dto\ChallengeDto;
+use App\Dto\ChallengeResultDto;
 use App\Service\ChallengeServiceInterface;
 use App\Service\ExamineeProviderInterface;
+use Nelmio\ApiDocBundle\Annotation\Model;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,10 +16,30 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Serializer\SerializerInterface;
+use OpenApi\Attributes as OA;
 
 class ChallengeController
 {
-    #[Route(path: '/exams/{examId}/challenges', requirements: ['examId' => Requirement::UUID_V4], methods: ['POST'])]
+    #[Route(path: '/api/v1/exams/{examId}/challenges', requirements: ['examId' => Requirement::UUID_V4], methods: ['POST'])]
+    #[OA\Response(
+        response: 201,
+        description: 'Ok. Challenge started',
+        headers: [new OA\Header(null, 'Location', 'Access to the challenge', true, new OA\Schema())],
+        content: new OA\JsonContent(
+            type: null,
+        )
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Unknown challenge'
+    )]
+    #[OA\Parameter(
+        name: 'examId',
+        in: 'path',
+        schema: new OA\Schema(type: 'string', format: 'uuid')
+    )]
+    #[OA\Tag(name: 'challenge')]
+    #[OA\Tag(name: 'v1')]
     public function startChallenge(
         string $examId,
         ExamineeProviderInterface $examineeProvider,
@@ -43,11 +66,27 @@ class ChallengeController
     }
 
     #[Route(
-        path: '/challenges/{challengeId}',
+        path: '/api/v1/challenges/{challengeId}',
         name: 'challenge_by_id',
         requirements: ['challengeId' => Requirement::UUID_V4],
         methods: ['GET']
     )]
+    #[OA\Response(
+        response: 200,
+        description: 'Ok',
+        content: new OA\JsonContent(ref: new Model(type: ChallengeDto::class))
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Unknown challenge'
+    )]
+    #[OA\Parameter(
+        name: 'challengeId',
+        in: 'path',
+        schema: new OA\Schema(type: 'string', format: 'uuid')
+    )]
+    #[OA\Tag(name: 'challenge')]
+    #[OA\Tag(name: 'v1')]
     public function challenge(
         string $challengeId,
         ChallengeServiceInterface $challengeService,
@@ -64,7 +103,34 @@ class ChallengeController
         }
     }
 
-    #[Route(path: '/challenges/{challengeId}/finish', requirements: ['challengeId' => Requirement::UUID_V4], methods: ['PUT'])]
+    #[Route(path: '/api/v1/challenges/{challengeId}/finish', requirements: ['challengeId' => Requirement::UUID_V4], methods: ['PUT'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Ok',
+        content: new OA\JsonContent(type: null)
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            type: 'array',
+            items: new OA\Items(ref: new Model(type: AnswerDto::class))
+        )
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Invalid input'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Unknown challenge'
+    )]
+    #[OA\Parameter(
+        name: 'challengeId',
+        in: 'path',
+        schema: new OA\Schema(type: 'string', format: 'uuid')
+    )]
+    #[OA\Tag(name: 'challenge')]
+    #[OA\Tag(name: 'v1')]
     public function finishChallenge(
         string $challengeId,
         ChallengeServiceInterface $challengeService,
@@ -94,7 +160,27 @@ class ChallengeController
         }
     }
 
-    #[Route(path: '/challenges/{challengeId}/results', requirements: ['challengeId' => Requirement::UUID_V4], methods: ['GET'])]
+    #[Route(path: '/api/v1/challenges/{challengeId}/results', requirements: ['challengeId' => Requirement::UUID_V4], methods: ['GET'])]
+    #[OA\Response(
+        response: 200,
+        description: 'Ok',
+        content: new OA\JsonContent(ref: new Model(type: ChallengeResultDto::class))
+    )]
+    #[OA\Response(
+        response: 400,
+        description: 'Can not see results of unfinished challenge'
+    )]
+    #[OA\Response(
+        response: 404,
+        description: 'Unknown challenge'
+    )]
+    #[OA\Parameter(
+        name: 'challengeId',
+        in: 'path',
+        schema: new OA\Schema(type: 'string', format: 'uuid')
+    )]
+    #[OA\Tag(name: 'challenge')]
+    #[OA\Tag(name: 'v1')]
     public function getChallengeResults(
         string $challengeId,
         ChallengeServiceInterface $challengeService,
