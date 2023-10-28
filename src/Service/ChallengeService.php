@@ -50,7 +50,7 @@ class ChallengeService implements ChallengeServiceInterface
 
     public function getChallenge(string $challengeId, string $examineeId): ChallengeDto
     {
-        return ChallengeDto::fromEntity($this->getChallengeForExaminee($challengeId, $examineeId));
+        return ChallengeDto::fromEntity($this->getChallengeForExaminee($challengeId, $examineeId), true);
     }
 
     public function finishChallenge(string $challengeId, string $examineeId, AnswerDto ...$answers): void

@@ -23,14 +23,19 @@ final class ChallengeDto
         $this->questions = $questions;
     }
 
-    public static function fromEntity(Challenge $challenge): self
+    public static function fromEntity(Challenge $challenge, bool $shuffle = false): self
     {
+        $questionsDto = [];
         $exam = $challenge->getExam();
-        $questions = [];
-        foreach ($exam->getQuestions() as $question) {
-            $questions[] = QuestionDto::fromEntity($question);
+        $questions = $exam->getQuestions();
+        if ($shuffle) {
+            $questions = $questions->toArray();
+            shuffle($questions);
+        }
+        foreach ($questions as $question) {
+            $questionsDto[] = QuestionDto::fromEntity($question, $shuffle);
         }
 
-        return new self($challenge->getId()->toString(), $exam->getId()->toString(), $exam->getTitle(), ...$questions);
+        return new self($challenge->getId()->toString(), $exam->getId()->toString(), $exam->getTitle(), ...$questionsDto);
     }
 }

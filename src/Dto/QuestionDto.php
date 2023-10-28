@@ -21,12 +21,17 @@ final class QuestionDto
         $this->options = $options;
     }
 
-    public static function fromEntity(Question $question): self
+    public static function fromEntity(Question $question, bool $shuffle = false): self
     {
-        $options = [];
-        foreach ($question->getOptions() as $option) {
-            $options[] = OptionDto::fromEntity($option);
+        $optionsDto = [];
+        $options = $question->getOptions();
+        if ($shuffle) {
+            $options = $options->toArray();
+            shuffle($options);
         }
-        return new self($question->getId(), $question->getContent(), ...$options);
+        foreach ($options as $option) {
+            $optionsDto[] = OptionDto::fromEntity($option);
+        }
+        return new self($question->getId(), $question->getContent(), ...$optionsDto);
     }
 }
