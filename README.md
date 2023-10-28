@@ -20,3 +20,5 @@ make install
 ```shell
 make test
 ```
+
+###### [API doc](http://localhost/api/doc)
