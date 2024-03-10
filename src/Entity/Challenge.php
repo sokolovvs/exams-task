@@ -17,8 +17,8 @@ use Ramsey\Uuid\UuidInterface;
 class Challenge
 {
     #[ORM\Id]
-    #[ORM\Column(type: "uuid", unique: true)]
-    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private UuidInterface $id;
 
@@ -67,15 +67,14 @@ class Challenge
 
     public function isFinished(): bool
     {
-        return $this->finishedAt !== null;
+        return null !== $this->finishedAt;
     }
 
     public function finish(
         ChallengeRepositoryInterface $challengeRepository,
         AnswerRepositoryInterface $answersRepository,
         Answer ...$answers
-    ): void
-    {
+    ): void {
         if ($this->isFinished()) {
             throw new \DomainException("The challenge#{$this->getId()->toString()} is already finished");
         }

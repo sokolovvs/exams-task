@@ -30,8 +30,7 @@ class ChallengeService implements ChallengeServiceInterface
         LoggerInterface $logger,
         EntityManagerInterface $em,
         ResultCalculatorInterface $resultCalculator
-    )
-    {
+    ) {
         $this->exams = $exams;
         $this->challenges = $challenges;
         $this->answerRepository = $answerRepository;
@@ -77,7 +76,7 @@ class ChallengeService implements ChallengeServiceInterface
             $this->em->commit();
         } catch (\Throwable $e) {
             $this->em->rollback();
-            $this->logger->error("Challenge finishing failed", ['exception' => $e, 'challengeId' => $challenge->getId()]);
+            $this->logger->error('Challenge finishing failed', ['exception' => $e, 'challengeId' => $challenge->getId()]);
             throw $e;
         }
     }

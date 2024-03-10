@@ -46,10 +46,9 @@ class ChallengeController
         ChallengeServiceInterface $challengeService,
         UrlGeneratorInterface $router,
         LoggerInterface $logger
-    ): JsonResponse
-    {
+    ): JsonResponse {
         try {
-            $challengeId = (string)$challengeService->startChallenge($examineeProvider->getExamineeId(), $examId);
+            $challengeId = (string) $challengeService->startChallenge($examineeProvider->getExamineeId(), $examId);
 
             return new JsonResponse(
                 null,
@@ -59,7 +58,7 @@ class ChallengeController
                 ]
             );
         } catch (\OutOfBoundsException $notFoundException) {
-            $logger->warning('Can not start challenge for unknown exam', ['exception' => $notFoundException, 'examId' => $examId,]);
+            $logger->warning('Can not start challenge for unknown exam', ['exception' => $notFoundException, 'examId' => $examId]);
 
             return new JsonResponse(['message' => 'Exam not found'], Response::HTTP_NOT_FOUND);
         }
@@ -92,12 +91,11 @@ class ChallengeController
         ChallengeServiceInterface $challengeService,
         ExamineeProviderInterface $examineeProvider,
         LoggerInterface $logger
-    ): JsonResponse
-    {
+    ): JsonResponse {
         try {
             return new JsonResponse($challengeService->getChallenge($challengeId, $examineeProvider->getExamineeId()));
         } catch (\OutOfBoundsException $notFoundException) {
-            $logger->warning('Unknown challenge', ['exception' => $notFoundException, 'challengeId' => $challengeId,]);
+            $logger->warning('Unknown challenge', ['exception' => $notFoundException, 'challengeId' => $challengeId]);
 
             return new JsonResponse(['message' => 'Challenge not found'], Response::HTTP_NOT_FOUND);
         }
@@ -138,23 +136,22 @@ class ChallengeController
         SerializerInterface $serializer,
         Request $request,
         LoggerInterface $logger
-    ): JsonResponse
-    {
+    ): JsonResponse {
         try {
-            $answers = $serializer->deserialize($request->getContent(), sprintf("%s[]", AnswerDto::class), 'json');
+            $answers = $serializer->deserialize($request->getContent(), sprintf('%s[]', AnswerDto::class), 'json');
             $challengeService->finishChallenge($challengeId, $examineeProvider->getExamineeId(), ...$answers);
 
             return new JsonResponse();
         } catch (\OutOfBoundsException $notFoundException) {
-            $logger->warning('Unknown challenge', ['exception' => $notFoundException, 'challengeId' => $challengeId,]);
+            $logger->warning('Unknown challenge', ['exception' => $notFoundException, 'challengeId' => $challengeId]);
 
             return new JsonResponse(null, Response::HTTP_NOT_FOUND);
         } catch (\DomainException $domainException) {
-            $logger->error('Can not finish challenge', ['exception' => $domainException, 'challengeId' => $challengeId,]);
+            $logger->error('Can not finish challenge', ['exception' => $domainException, 'challengeId' => $challengeId]);
 
             return new JsonResponse(null, Response::HTTP_BAD_REQUEST);
         } catch (\Throwable $e) {
-            $logger->error('Can not finish challenge. Internal error.', ['exception' => $e, 'challengeId' => $challengeId,]);
+            $logger->error('Can not finish challenge. Internal error.', ['exception' => $e, 'challengeId' => $challengeId]);
 
             return new JsonResponse(null, Response::HTTP_INTERNAL_SERVER_ERROR);
         }
@@ -186,16 +183,15 @@ class ChallengeController
         ChallengeServiceInterface $challengeService,
         ExamineeProviderInterface $examineeProvider,
         LoggerInterface $logger
-    ): JsonResponse
-    {
+    ): JsonResponse {
         try {
             return new JsonResponse($challengeService->getChallengeResults($challengeId, $examineeProvider->getExamineeId()));
         } catch (\OutOfBoundsException $notFoundException) {
-            $logger->warning('Unknown challenge', ['exception' => $notFoundException, 'challengeId' => $challengeId,]);
+            $logger->warning('Unknown challenge', ['exception' => $notFoundException, 'challengeId' => $challengeId]);
 
             return new JsonResponse(['message' => 'Challenge not found'], Response::HTTP_NOT_FOUND);
         } catch (\DomainException $domainException) {
-            $logger->warning('Can not see results of unfinished challenge', ['exception' => $domainException, 'challengeId' => $challengeId,]);
+            $logger->warning('Can not see results of unfinished challenge', ['exception' => $domainException, 'challengeId' => $challengeId]);
 
             return new JsonResponse(['message' => $domainException->getMessage()], Response::HTTP_BAD_REQUEST);
         }

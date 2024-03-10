@@ -16,15 +16,15 @@ use Webmozart\Assert\Assert;
 class Exam
 {
     #[ORM\Id]
-    #[ORM\Column(type: "uuid", unique: true)]
-    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private UuidInterface $id;
 
     #[ORM\Column(length: 255)]
     private string $title;
 
-    #[ORM\OneToMany(mappedBy: 'exam', targetEntity: Question::class, cascade: ["persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'exam', targetEntity: Question::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $questions;
 
     public function __construct(string $title, Question ...$questions)

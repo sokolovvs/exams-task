@@ -15,8 +15,8 @@ use Webmozart\Assert\Assert;
 class Question
 {
     #[ORM\Id]
-    #[ORM\Column(type: "uuid", unique: true)]
-    #[ORM\GeneratedValue(strategy: "CUSTOM")]
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: UuidGenerator::class)]
     private UuidInterface $id;
 
@@ -27,7 +27,7 @@ class Question
     #[ORM\JoinColumn(nullable: false)]
     private ?Exam $exam = null;
 
-    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Option::class, cascade: ["persist"], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'question', targetEntity: Option::class, cascade: ['persist'], orphanRemoval: true)]
     private Collection $options;
 
     public function __construct(string $content, Option ...$options)

@@ -28,7 +28,7 @@ class ExamRepository extends ServiceEntityRepository implements ExamRepositoryIn
     public function getById(string $examId): Exam
     {
         $exam = $this->find($examId);
-        if ($exam === null) {
+        if (null === $exam) {
             throw new \OutOfBoundsException("Exam#$examId not found");
         }
 

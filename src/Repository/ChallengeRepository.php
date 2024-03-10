@@ -39,7 +39,7 @@ class ChallengeRepository extends ServiceEntityRepository implements ChallengeRe
 
         $challenge = $qb->getQuery()->getOneOrNullResult();
 
-        if ($challenge === null) {
+        if (null === $challenge) {
             throw new \OutOfBoundsException("Challenge#$id not found");
         }
 

@@ -21,7 +21,7 @@ interface ChallengeServiceInterface
 
     /**
      * @throws \OutOfBoundsException when challenge not found
-     * @throws \DomainException when challenge is already finished OR input data invalid
+     * @throws \DomainException      when challenge is already finished OR input data invalid
      */
     public function finishChallenge(string $challengeId, string $examineeId, AnswerDto ...$answers): void;
 

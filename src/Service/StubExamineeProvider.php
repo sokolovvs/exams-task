@@ -2,8 +2,6 @@
 
 namespace App\Service;
 
-use Ramsey\Uuid\Uuid;
-
 class StubExamineeProvider implements ExamineeProviderInterface
 {
     private ?string $examineeId;
@@ -20,7 +18,7 @@ class StubExamineeProvider implements ExamineeProviderInterface
 
     public function getExamineeId(): string
     {
-        if ($this->examineeId === null) {
+        if (null === $this->examineeId) {
             throw new \OutOfBoundsException('Unknown examinee');
         }
 
