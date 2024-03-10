@@ -24,3 +24,7 @@ cs-fix:
 	php ./vendor/bin/php-cs-fixer fix ./src
 cs-diff:
 	 php ./vendor/bin/php-cs-fixer fix ./src --dry-run --diff
+psalm:
+	php ./vendor/bin/psalm
+psalm-full:
+	php ./vendor/bin/psalm --show-info=true
