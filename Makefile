@@ -19,3 +19,8 @@ test_env:
 	php bin/console doctrine:migrations:migrate --env=test --no-interaction
 fixtures:
 	php bin/console doctrine:fixtures:load --no-interaction
+
+cs-fix:
+	php ./vendor/bin/php-cs-fixer fix ./src
+cs-diff:
+	 php ./vendor/bin/php-cs-fixer fix ./src --dry-run --diff
