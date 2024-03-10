@@ -20,6 +20,6 @@ final class OptionDto
 
     public static function fromEntity(Option $option): self
     {
-        return new self($option->getId(), $option->getContent());
+        return new self($option->getId()->toString(), $option->getContent());
     }
 }

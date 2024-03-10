@@ -31,10 +31,9 @@ class Exam
     {
         Assert::notEmpty($questions, 'Exam must contain 1+ questions');
         $this->id = Uuid::uuid4();
-        $this->questions = new ArrayCollection();
+        $this->questions = new ArrayCollection($questions);
         foreach ($questions as $question) {
             $question->setExam($this);
-            $this->questions->add($question);
         }
         $this->title = $title;
     }

@@ -22,7 +22,7 @@ class DefaultResultCalculator implements ResultCalculatorInterface
             if ($isCorrect) {
                 foreach ($question->getOptions() as $option) {
                     if (in_array($option->getId()->toString(), $answersHash[$question->getId()->toString()])) {
-                        $isCorrect &= $option->isCorrect();
+                        $isCorrect = $isCorrect && $option->isCorrect();
                     }
                 }
             }

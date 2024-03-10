@@ -35,10 +35,9 @@ class Question
         Assert::minCount($options, 2, 'Question must contain 2+ options');
         $this->id = Uuid::uuid4();
         $this->content = $content;
-        $this->options = new ArrayCollection();
+        $this->options = new ArrayCollection($options);
         foreach ($options as $option) {
             $option->setQuestion($this);
-            $this->options->add($option);
         }
     }
 

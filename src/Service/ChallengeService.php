@@ -97,7 +97,7 @@ class ChallengeService implements ChallengeServiceInterface
         }
         $filteredAnswers = [];
         foreach ($answers as $answer) {
-            if (!isset($questionsOptionsHash[$answer->questionId][$answer->optionId])) {
+            if (!isset($questionsOptionsHash[$answer->questionId][$answer->optionId]) || !isset($questionsHash[$answer->questionId])) {
                 throw new \DomainException("Wrong answer for question#{$answer->questionId} and option#{$answer->optionId}");
             }
             $filteredAnswers[] = new Answer(

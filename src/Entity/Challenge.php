@@ -30,7 +30,7 @@ class Challenge
     private \DateTimeImmutable $createdAt;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $finishedAt;
+    private ?\DateTimeImmutable $finishedAt = null;
 
     #[ORM\Column(nullable: false)]
     private string $examineeId;

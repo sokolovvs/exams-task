@@ -36,6 +36,6 @@ final class QuestionDto
             $optionsDto[] = OptionDto::fromEntity($option);
         }
 
-        return new self($question->getId(), $question->getContent(), ...$optionsDto);
+        return new self($question->getId()->toString(), $question->getContent(), ...$optionsDto);
     }
 }
