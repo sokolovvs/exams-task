@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<files psalm-version="5.23.0@005e3184fb6de4350a873b9b8c4dc3cede9db762">
+  <file src="src/Controller/ChallengeController.php">
+    <UnusedClass>
+      <code><![CDATA[ChallengeController]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/DataFixtures/ExamFixture.php">
+    <UnusedClass>
+      <code><![CDATA[ExamFixture]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Dto/AnswerDto.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Dto/ChallengeDto.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$challengeId]]></code>
+      <code><![CDATA[$examId]]></code>
+      <code><![CDATA[$questions]]></code>
+      <code><![CDATA[$title]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Dto/ChallengeResultDto.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$questions]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Dto/OptionDto.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$content]]></code>
+      <code><![CDATA[$id]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Dto/QuestionResultDto.php">
+    <PossiblyUnusedProperty>
+      <code><![CDATA[$content]]></code>
+      <code><![CDATA[$id]]></code>
+      <code><![CDATA[$isCorrectAnswered]]></code>
+      <code><![CDATA[$options]]></code>
+    </PossiblyUnusedProperty>
+  </file>
+  <file src="src/Entity/Answer.php">
+    <UnusedProperty>
+      <code><![CDATA[$challenge]]></code>
+      <code><![CDATA[$id]]></code>
+    </UnusedProperty>
+  </file>
+  <file src="src/Entity/Challenge.php">
+    <UnusedProperty>
+      <code><![CDATA[$createdAt]]></code>
+    </UnusedProperty>
+  </file>
+  <file src="src/Repository/AnswerRepository.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedParam>
+      <code><![CDATA[$registry]]></code>
+    </PossiblyUnusedParam>
+  </file>
+  <file src="src/Repository/ChallengeRepository.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedParam>
+      <code><![CDATA[$registry]]></code>
+    </PossiblyUnusedParam>
+  </file>
+  <file src="src/Repository/ExamRepository.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[__construct]]></code>
+    </PossiblyUnusedMethod>
+    <PossiblyUnusedParam>
+      <code><![CDATA[$logger]]></code>
+      <code><![CDATA[$registry]]></code>
+    </PossiblyUnusedParam>
+  </file>
+  <file src="src/Repository/ExamRepositoryInterface.php">
+    <PossiblyUnusedMethod>
+      <code><![CDATA[save]]></code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Service/ChallengeService.php">
+    <UnusedClass>
+      <code><![CDATA[ChallengeService]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Service/DefaultResultCalculator.php">
+    <UnusedClass>
+      <code><![CDATA[DefaultResultCalculator]]></code>
+    </UnusedClass>
+  </file>
+  <file src="src/Service/StubExamineeProvider.php">
+    <UnusedClass>
+      <code><![CDATA[StubExamineeProvider]]></code>
+    </UnusedClass>
+  </file>
+</files>
