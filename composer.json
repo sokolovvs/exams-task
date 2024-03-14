@@ -33,6 +33,7 @@
         "doctrine/doctrine-fixtures-bundle": "^3.4",
         "friendsofphp/php-cs-fixer": "^3.51",
         "phpunit/phpunit": "^9.5",
+        "psalm/plugin-symfony": "^5.1",
         "symfony/browser-kit": "6.3.*",
         "symfony/css-selector": "6.3.*",
         "symfony/maker-bundle": "^1.51",

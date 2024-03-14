@@ -25,6 +25,6 @@ cs-fix:
 cs-diff:
 	 php ./vendor/bin/php-cs-fixer fix ./src --dry-run --diff
 psalm:
-	php ./vendor/bin/psalm
+	php ./vendor/bin/psalm --diff
 psalm-full:
-	php ./vendor/bin/psalm --show-info=true
+	php ./vendor/bin/psalm --show-info=true --diff
