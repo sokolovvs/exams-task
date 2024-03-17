@@ -2,6 +2,9 @@
 
 namespace App\Entity;
 
+use App\Domain\Interfaces\EventEmitterInterface;
+use App\Event\ChallengeCreatedEvent;
+use App\Event\ChallengeFinishedEvent;
 use App\Repository\AnswerRepositoryInterface;
 use App\Repository\ChallengeRepository;
 use App\Repository\ChallengeRepositoryInterface;
@@ -14,7 +17,7 @@ use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity(repositoryClass: ChallengeRepository::class)]
 #[ORM\Table('challenges')]
-class Challenge
+class Challenge implements EventEmitterInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -41,6 +44,8 @@ class Challenge
     #[ORM\OneToMany(mappedBy: 'challenge', targetEntity: Answer::class)]
     private Collection $answers;
 
+    private array $events = [];
+
     public function __construct(Exam $exam, string $examineeId)
     {
         $this->id = Uuid::uuid4();
@@ -48,6 +53,7 @@ class Challenge
         $this->exam = $exam;
         $this->examineeId = $examineeId;
         $this->answers = new ArrayCollection();
+        $this->events[] = new ChallengeCreatedEvent($this->id);
     }
 
     public function getId(): UuidInterface
@@ -81,6 +87,7 @@ class Challenge
         $answersRepository->save(...$answers);
         $this->finishedAt = new \DateTimeImmutable();
         $challengeRepository->save($this);
+        $this->events[] = new ChallengeFinishedEvent($this->id);
     }
 
     /**
@@ -89,5 +96,13 @@ class Challenge
     public function getAnswers(): Collection
     {
         return $this->answers;
+    }
+
+    public function popEvents(): array
+    {
+        $events = $this->events;
+        $this->events = [];
+
+        return $events;
     }
 }
