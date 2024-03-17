@@ -20,6 +20,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Dto/'
+            - '../src/Events/'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
@@ -27,3 +28,7 @@ services:
     App\Controller\:
         resource: '../src/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Infrastructure\DoctrinePublishDomainEventsOnFlushListener:
+        tags:
+            - { name: doctrine.event_listener, event: onFlush }
