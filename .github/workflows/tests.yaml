@@ -1,0 +1,31 @@
+name: Symfony Tests
+
+on:
+  push:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    name: Test Symfony application
+    runs-on: ubuntu-latest
+    services:
+      docker:
+        image: docker:latest
+        options: --privileged
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Create .env file
+        run: cp .env.example .env
+
+      - name: Build Docker images
+        run: make install
+
+      - name: Run tests
+        run: docker exec $(docker ps -aq --filter="name=sf_app" | head -n 1) sh -c 'make test'
+
+      - name: Stop Docker Compose
+        run: docker-compose -f docker-compose.yaml down
