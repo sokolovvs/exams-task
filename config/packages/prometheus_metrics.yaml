@@ -1,0 +1,30 @@
+artprima_prometheus_metrics:
+    namespace: sf_app
+    storage:
+        # Known values: in_memory, apcu, apcng, redis
+        type: redis
+
+        # Available parameters used by redis
+        host: redis
+        port: 6379
+        timeout: 0.1
+        read_timeout: 10
+        persistent_connections: false
+
+    ignored_routes:
+        - prometheus_bundle_prometheus
+        - _wdt
+
+    # used to disable default application metrics
+    #disable_default_metrics: false
+
+    # Recommended to disable default metrics from promphp/prometheus_client_php
+    # see https://github.com/PromPHP/prometheus_client_php/issues/62
+    disable_default_promphp_metrics: true
+
+    # used to enable console metrics
+    #enable_console_metrics: false
+
+when@test:
+    artprima_prometheus_metrics:
+        storage: in_memory
