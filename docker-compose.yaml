@@ -11,7 +11,7 @@ services:
     depends_on:
       - sf_app
     networks:
-      - localnet
+      - common
   sf_app:
     build:
       context: ./Docker/sf_app
@@ -25,8 +25,9 @@ services:
       - ./Docker/sf_app/php.ini:/usr/local/etc/php/php.ini
     depends_on:
       - postgres
+      - redis
     networks:
-      - localnet
+      - common
   postgres:
     build: ./Docker/postgres
     ports:
@@ -38,8 +39,22 @@ services:
       POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
       POSTGRES_DB: "${POSTGRES_DB}"
     networks:
-      - localnet
+      - common
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - /volumes/redis-data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - common
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 5s
 
 networks:
-  localnet:
+  common:
     driver: bridge
