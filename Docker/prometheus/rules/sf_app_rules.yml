@@ -1,0 +1,12 @@
+groups:
+  - name: http_errors_alert
+    rules:
+      - alert: HTTP5xxErrorsExceedPercentageThreshold
+        expr: |
+          sum(rate(sf_app_http_5xx_responses_total{action="all"}[5m])) / sum(rate(sf_app_http_requests_total{action="all"}[5m])) * 100 > 5
+        for: 5m
+        labels:
+          severity: warning
+        annotations:
+          summary: "HTTP 5xx Errors Exceed Percentage Threshold"
+          description: "The percentage of HTTP 5xx errors has exceeded 5% of total HTTP responses within the last 5 minutes."
