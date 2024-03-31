@@ -25,6 +25,10 @@ artprima_prometheus_metrics:
     # used to enable console metrics
     #enable_console_metrics: false
 
+services:
+    Prometheus\RegistryInterface:
+        alias: prometheus_metrics_bundle.collector_registry
+
 when@test:
     artprima_prometheus_metrics:
         storage: in_memory
