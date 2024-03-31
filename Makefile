@@ -28,3 +28,8 @@ psalm:
 	php ./vendor/bin/psalm --diff
 psalm-full:
 	php ./vendor/bin/psalm --show-info=true --diff
+
+up-full:
+	docker-compose -f docker-compose.yaml -f ./Docker/prometheus/docker_compose_prometheus.yaml build && docker-compose -f docker-compose.yaml -f ./Docker/prometheus/docker_compose_prometheus.yaml up -d
+down-full:
+	docker-compose -f docker-compose.yaml -f ./Docker/prometheus/docker_compose_prometheus.yaml down

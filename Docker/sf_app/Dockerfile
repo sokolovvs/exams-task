@@ -19,7 +19,10 @@ RUN apt-get install -y \
         htop \
                 --no-install-recommends
 
+RUN apt-get install -y net-tools
+
 RUN docker-php-ext-install pdo_pgsql
+RUN pecl install redis && docker-php-ext-enable redis
 
 
 RUN pecl install xdebug-3.2.0
@@ -35,3 +38,5 @@ ENV HOST_UID $HOST_UID
 ENV HOST_GID $HOST_GID
 
 RUN usermod -u $HOST_UID www-data && groupmod -g $HOST_GID www-data
+
+EXPOSE 9000

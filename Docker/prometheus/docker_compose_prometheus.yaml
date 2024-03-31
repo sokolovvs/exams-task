@@ -1,0 +1,16 @@
+services:
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - "9090:9090"
+    volumes:
+      - ../../volumes/prometheus:/etc/prometheus
+      - ./Docker/prometheus/prometheus.yml:/etc/prometheus.yml
+      - ./Docker/prometheus/rules:/etc/rules
+    command:
+      - '--config.file=/etc/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    depends_on:
+      - sf_app
+    networks:
+      - common
